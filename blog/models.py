@@ -7,6 +7,10 @@ from modelcluster.fields import ParentalKey
 from modelcluster.tags import ClusterTaggableManager
 from taggit.models import Tag as TaggitTag
 from taggit.models import TaggedItemBase
+from wagtail.core.models import Page
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import (
     FieldPanel,
     FieldRowPanel,
@@ -15,17 +19,13 @@ from wagtail.admin.edit_handlers import (
     PageChooserPanel,
     StreamFieldPanel,
 )
-from wagtail.core.models import Page
-from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
-from wagtail.snippets.models import register_snippet
 
 # Page models (inherit from the Wagtail Page class).
 class BlogPage(Page):
     description = models.CharField(max_length=255, blank=True,)
     content_panels = Page.content_panels + [FieldPanel("description", classname="full")]
 
-class Post(Page):
+class PostPage(Page):
     header_image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -40,18 +40,21 @@ class Post(Page):
         FieldPanel("tags"),
     ]
 
-# Intermediary model
+# Intermediary model.
 class PostPageBlogCategory(models.Model):
     page = ParentalKey(
-        "blog.Post", on_delete=models.CASCADE, related_name="categories"
+        "blog.PostPage", on_delete=models.CASCADE, related_name="categories"
     )
     blog_category = models.ForeignKey(
         "blog.BlogCategory", on_delete=models.CASCADE, related_name="post_pages"
     )
-    panels = [SnippetChooserPanel("blog_category"),]
+    panels = [
+        SnippetChooserPanel("blog_category"),
+    ]
+
     class Meta:
         unique_together = ("page", "blog_category")
-
+        
 # Two models, both of theme inherit from the standard Django models Model.
 @register_snippet
 class BlogCategory(models.Model):
@@ -61,14 +64,16 @@ class BlogCategory(models.Model):
         FieldPanel("name"),
         FieldPanel("slug"),
     ]
+
     def __str__(self):
         return self.name
+
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
 class PostPageTag(TaggedItemBase):
-    content_object = ParentalKey("Post", related_name="post_tags")
+    content_object = ParentalKey("PostPage", related_name="post_tags")
 
 @register_snippet
 class Tag(TaggitTag):

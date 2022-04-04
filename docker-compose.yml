@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.10.4"
 
 services:
   web:
@@ -21,9 +21,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=blog
+      - POSTGRES_DB=blogger
       - POSTGRES_USER=blog
-      - POSTGRES_PASSWORD=react_wagtail_bootstrap
+      - POSTGRES_PASSWORD=django_wagtail_bootstrap
 
 volumes:
   postgres_data:

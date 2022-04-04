@@ -17,6 +17,9 @@ ___
 3. home & search are Django apps created by Wagtail.
 4. docker-compose.yml is a compose file to configure your app's services.
 ___
+<br>
+<img src="img/admin.png" height="480" />
+<br>
 ### References
 Django's doc: https://docs.djangoproject.com/en/4.0/topics/db/models/#module-django.db.models
 Wagtail's doc: https://docs.wagtail.org/en/stable/
