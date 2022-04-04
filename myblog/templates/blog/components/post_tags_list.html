@@ -1,0 +1,10 @@
+<!-- Page Templates in Wagtail - Django templates: Post page
+Display tag info for specific Post.
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+<div>
+    {% for tag in post_tags %}
+        <span class="badge bg-secondary">{{ tag }}</span>
+    {% endfor %}
+</div>

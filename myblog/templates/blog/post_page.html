@@ -1,19 +1,20 @@
-<!-- Page Templates in Wagtail - Django templates
+<!-- Page Templates in Wagtail: Post page detail
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
 {% extends "base.html" %}
 
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags blogapp_tags %}
 
 {% block content %}
     {% image page.header_image original as header_image %}
     <img src="{{ header_image.url }}" class="img-fluid">
 
     <h1>{{ page.title }}</h1>
-    <hr>
+    
+    <p>{% post_categories_list %}</p>
 
-    <div class="tags">
+    <!-- <div class="tags">
         <h3>Tags</h3>
         {% for tag in page.tags.all %}
             <button type="button">{{ tag }}</button>
@@ -28,7 +29,10 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
                 {{ postpage_category.blog_category.name }}
             </li>
         {% endfor %}
-    </ul>
+    </ul> -->
 
-    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+    {% post_tags_list %}
+    <hr>
+
+    <p><a href="{{ page.get_parent.url }}">Return to home</a></p>
 {% endblock %}
