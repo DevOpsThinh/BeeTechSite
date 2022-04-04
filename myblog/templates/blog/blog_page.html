@@ -1,0 +1,33 @@
+<!-- Page Templates in Wagtail - Django templates
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+{% extends "base.html" %}
+
+<!-- {% load wagtailcore_tags debugger_tags %} {{ page|pdb }} -->
+{% load wagtailcore_tags wagtailimages_tags %} 
+
+{% block content %} 
+    {% for post in page.get_children.specific %}
+        <div class="card mb-4">
+            {% if post.header_image %} 
+            {% image post.header_image original as header_image %}
+            <a href="{% pageurl post %}">
+                <img src="{{ header_image.url }}" class="card-img-top"/>
+            </a>
+            {% endif %}
+
+            <div class="card-body">
+                <h2 class="card-title">
+                <a href="{% pageurl post %}">{{ post.title }}</a>
+                </h2>
+                <p class="card-text">{{ post.description }}</p>
+                <a href="{% pageurl post %}" class="btn btn-primary"> Read More &rarr;</a>
+            </div>
+
+            <div class="card-footer text-muted">
+                Posted on {{ post.last_published_at }}
+            </div>
+        </div>
+    {% endfor %} 
+{% endblock %}

@@ -1,0 +1,34 @@
+<!-- Page Templates in Wagtail - Django templates
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+    {% image page.header_image original as header_image %}
+    <img src="{{ header_image.url }}" class="img-fluid">
+
+    <h1>{{ page.title }}</h1>
+    <hr>
+
+    <div class="tags">
+        <h3>Tags</h3>
+        {% for tag in page.tags.all %}
+            <button type="button">{{ tag }}</button>
+        {% endfor %}
+    </div>
+
+    <h3>Categories</h3>
+
+    <ul>
+        {% for postpage_category in page.categories.all %}
+            <li>
+                {{ postpage_category.blog_category.name }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+{% endblock %}
