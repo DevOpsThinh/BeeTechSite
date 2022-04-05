@@ -1,6 +1,9 @@
-# Constructs content with Wagtail built-in blocks
-# Created by Nguyen Truong Thinh
-# Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504
+"""
+Constructs content with Wagtail built-in blocks
+
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504
+"""
 
 from wagtail.core.models import Orderable, Page
 from wagtail.embeds.blocks import EmbedBlock

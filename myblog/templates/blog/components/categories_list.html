@@ -2,6 +2,8 @@
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
+{% load wagtailroutablepage_tags %}
+
 <div class="card mb-4">
     <h5 class="card-header">Categories</h5>
     <div class="card-body">
@@ -10,8 +12,8 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
                 <ul class="list-unstyled mb-0">
                     {% for category in categories %}
                         <li>
-                            <a href="#" class="link-primary text-decoration-none">
-                                {{ category.name}}
+                            <a href="{% routablepageurl blog_page "post_by_category" category.slug %}" class="link-primary text-decoration-none">
+                                {{ category.name }}
                             </a>
                         </li>
                         {% empty %}

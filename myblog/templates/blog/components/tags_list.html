@@ -2,12 +2,14 @@
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
+{% load wagtailroutablepage_tags %}
+
 <div class="card mb-4">
     <h5 class="card-header">Tags</h5>
     <div class="card-body">
         {% for tag in tags %}
-            <a href="#" class="text-decoration-none">
-                <span class="badge bg-secondary">{{ tag}}</span>
+            <a href="{% routablepageurl blog_page "post_by_tag" tag.slug %}" class="text-decoration-none">
+                <span class="badge bg-secondary">{{ tag }}</span>
             </a>
             {% empty %}
             'No tags yet.'

@@ -1,6 +1,9 @@
-# A modern blog web app
-# Created by Nguyen Truong Thinh
-# Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504
+"""
+A modern blog web app
+
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504
+"""
 
 from django.db import models
 from modelcluster.fields import ParentalKey
@@ -20,12 +23,61 @@ from wagtail.admin.edit_handlers import (
     StreamFieldPanel,
 )
 from wagtail.core.fields import StreamField
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 from .blocks import BodyBlock
 
 # Page models (inherit from the Wagtail Page class).
-class BlogPage(Page):
+class BlogPage(RoutablePageMixin, Page):
     description = models.CharField(max_length=255, blank=True,)
     content_panels = Page.content_panels + [FieldPanel("description", classname="full")]
+
+    #--------------------------------------------------------------
+    #                               Methods
+    #--------------------------------------------------------------
+
+    # return a dictionary of variable to bind into the template.
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["blog_page"] = self
+
+        paginator = Paginator(self.posts, 1)
+        page = request.GET.get("page")
+
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.object_list.none()
+
+        # context["posts"] = self.posts
+        context["posts"] = posts
+        return context
+    
+    # return the public PostPage of the BlogPage.
+    def get_posts(self):
+        return PostPage.objects.descendant_of(self).live()
+
+    #--------------------------------------------------------------
+    #                               Routes
+    #--------------------------------------------------------------
+
+    @route(r"^tag/(?P<tag>[-\w]+)/$")
+    def post_by_tag(self, request, tag, *args, **kwargs):
+        self.posts = self.get_posts().filter(tags__slug=tag)
+        return self.render(request)
+
+    @route(r"^category/(?P<category>[-\w]+)/$")
+    def post_by_category(self, request, category, *args, **kwargs):
+        self.posts = self.get_posts().filter(categories__blog_category__slug=category)
+        return self.render(request)
+
+    @route(r"^$")
+    def post_list(self, request, *args, **kwargs):
+        self.posts = self.get_posts()
+        return self.render(request)
 
 class PostPage(Page):
     header_image = models.ForeignKey(
@@ -43,6 +95,15 @@ class PostPage(Page):
         FieldPanel("tags"),
         StreamFieldPanel("body"),
     ]
+
+    #--------------------------------------------------------------
+    #                               Methods
+    #--------------------------------------------------------------
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["blog_page"] = self.get_parent().specific
+        return context
 
 # Intermediary model.
 class PostPageBlogCategory(models.Model):
