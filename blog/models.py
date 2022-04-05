@@ -19,6 +19,8 @@ from wagtail.admin.edit_handlers import (
     PageChooserPanel,
     StreamFieldPanel,
 )
+from wagtail.core.fields import StreamField
+from .blocks import BodyBlock
 
 # Page models (inherit from the Wagtail Page class).
 class BlogPage(Page):
@@ -33,11 +35,13 @@ class PostPage(Page):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    body = StreamField(BodyBlock(), blank=True)
     tags = ClusterTaggableManager(through="blog.PostPageTag", blank=True)
     content_panels = Page.content_panels + [
         ImageChooserPanel("header_image"),
         InlinePanel("categories", label="category"),
         FieldPanel("tags"),
+        StreamFieldPanel("body"),
     ]
 
 # Intermediary model.
