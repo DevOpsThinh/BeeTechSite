@@ -25,8 +25,11 @@ from wagtail.admin.edit_handlers import (
 from wagtail.core.fields import StreamField
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import Http404
+from django.utils.functional import cached_property
 
 from .blocks import BodyBlock
+import datetime
 
 # Page models (inherit from the Wagtail Page class).
 class BlogPage(RoutablePageMixin, Page):
@@ -42,7 +45,7 @@ class BlogPage(RoutablePageMixin, Page):
         context = super().get_context(request, *args, **kwargs)
         context["blog_page"] = self
 
-        paginator = Paginator(self.posts, 1)
+        paginator = Paginator(self.posts, 5)
         page = request.GET.get("page")
 
         try:
@@ -58,11 +61,29 @@ class BlogPage(RoutablePageMixin, Page):
     
     # return the public PostPage of the BlogPage.
     def get_posts(self):
-        return PostPage.objects.descendant_of(self).live()
+        return PostPage.objects.descendant_of(self).live().order_by("-post_date")
 
     #--------------------------------------------------------------
     #                               Routes
     #--------------------------------------------------------------
+
+    @route(r"^(\d{4})/$")
+    @route(r"^(\d{4})/(\d{2})/$")
+    @route(r"^(\d{4})/(\d{2})/(\d{2})/$")
+    def post_by_date(self, request, year, month=None, day=None, *args, **kwargs):
+        self.posts = self.get_posts().filter(post_date__year=year)
+        if month:
+            self.posts = self.posts.filter(post_date__month=month)
+        if day:
+            self.posts = self.posts.filter(post_date__day=day)
+        return self.render(request)
+
+    @route(r"^(\d{4})/(\d{2})/(\d{2})/(.+)/$")
+    def post_by_date_slug(self, request, year, month, day, slug, *args, **kwargs):
+        post_page = self.get_posts().filter(slug=slug).first()
+        if not post_page:
+            raise Http404
+        return post_page.serve(request)
 
     @route(r"^tag/(?P<tag>[-\w]+)/$")
     def post_by_tag(self, request, tag, *args, **kwargs):
@@ -95,6 +116,10 @@ class PostPage(Page):
         FieldPanel("tags"),
         StreamFieldPanel("body"),
     ]
+    post_date = models.DateTimeField(
+        verbose_name="Post date", default=datetime.datetime.today
+    )
+    settings_panels = Page.settings_panels + [FieldPanel("post_date"),]
 
     #--------------------------------------------------------------
     #                               Methods
@@ -102,8 +127,19 @@ class PostPage(Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["blog_page"] = self.get_parent().specific
+        context["blog_page"] = self.blog_page
         return context
+
+    @cached_property
+    def blog_page(self):
+        return self.get_parent().specific
+
+    @cached_property
+    def canonical_url(self):
+        from blog.templatetags.blogapp_tags import post_page_date_slug_url
+
+        blog_page = self.blog_page
+        return post_page_date_slug_url(self, blog_page)
 
 # Intermediary model.
 class PostPageBlogCategory(models.Model):

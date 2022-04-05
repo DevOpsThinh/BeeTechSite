@@ -12,21 +12,21 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
         <div class="card mb-4">
             {% if post.header_image %} 
             {% image post.header_image original as header_image %}
-            <a href="{% pageurl post %}">
+            <a href="{% post_page_date_slug_url post blog_page %}">
                 <img src="{{ header_image.url }}" class="card-img-top"/>
             </a>
             {% endif %}
 
             <div class="card-body">
                 <h2 class="card-title">
-                <a href="{% pageurl post %}">{{ post.title }}</a>
+                <a href="{% post_page_date_slug_url post blog_page %}">{{ post.title }}</a>
                 </h2>
                 <p class="card-text">{{ post.description }}</p>
-                <a href="{% pageurl post %}" class="btn btn-primary"> Read More &rarr;</a>
+                <a href="{% post_page_date_slug_url post blog_page %}" class="btn btn-primary"> Read More &rarr;</a>
             </div>
 
             <div class="card-footer text-muted">
-                Posted on {{ post.last_published_at }}
+                Posted on {{ post.post_date }}
             </div>
         </div>
     {% endfor %} 

@@ -17,6 +17,10 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    {% if page.canonical_url %}
+      <link rel="canonical" href="{{ page.canonical_url }}"/>
+    {% endif %}
+
     {# Global stylesheets #}
     <link
       rel="stylesheet"
