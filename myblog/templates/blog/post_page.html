@@ -2,40 +2,58 @@
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
-{% extends "base.html" %}
+{% extends "base.html" %} 
 
-{% load wagtailcore_tags wagtailimages_tags blogapp_tags %}
+{% load wagtailcore_tags wagtailimages_tags blogapp_tags static %} 
 
-{% block content %}
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static "css/code_theme.css" %}"/> 
+{% endblock %} 
+
+{% block content %} 
     {% image page.header_image original as header_image %}
-    <img src="{{ header_image.url }}" class="img-fluid">
+    <img src="{{ header_image.url }}" class="img-fluid" />
 
     <h1>{{ page.title }}</h1>
-    
+
     <p>{% post_categories_list %}</p>
 
     <!-- <div class="tags">
-        <h3>Tags</h3>
-        {% for tag in page.tags.all %}
-            <button type="button">{{ tag }}</button>
-        {% endfor %}
-    </div>
+            <h3>Tags</h3>
+            {% for tag in page.tags.all %}
+                <button type="button">{{ tag }}</button>
+            {% endfor %}
+        </div>
 
-    <h3>Categories</h3>
+        <h3>Categories</h3>
 
-    <ul>
-        {% for postpage_category in page.categories.all %}
-            <li>
-                {{ postpage_category.blog_category.name }}
-            </li>
-        {% endfor %}
-    </ul> -->
+        <ul>
+            {% for postpage_category in page.categories.all %}
+                <li>
+                    {{ postpage_category.blog_category.name }}
+                </li>
+            {% endfor %}
+        </ul> -->
 
-    {# body #}
-    {% include 'blog/components/streamfield.html' %}
-
-    {% post_tags_list %}
-    <hr>
+    {# body #} {% include 'blog/components/streamfield.html' %} {% post_tags_list %}
+    <hr />
 
     <p><a href="{{ page.get_parent.url }}">Return to home</a></p>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$','$$']] ,
+                processEscapes: true
+            },
+            "HTML-CSS": {availableFonts: ["TeX"]}
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js">
+    </script>
 {% endblock %}

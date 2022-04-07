@@ -4,4 +4,6 @@ psycopg2-binary==2.9.3
 django-extensions==3.1.5
 wagtailmenus==3.0.2
 wagtail-metadata==3.5.0
+wagtail-markdown==0.8.0
+Pygments
 gunicorn==20.1.0

@@ -10,7 +10,13 @@ from urllib.parse import urlparse, urlunparse
 from django.template import Library, loader
 from django.http import QueryDict
 
+from blog.md_converter.utils import render_markdown
+
 register = Library()
+
+@register.filter(name='markdown')
+def markdown(value):
+    return render_markdown(value)
 
 @register.inclusion_tag('blog/components/categories_list.html', takes_context=True)
 

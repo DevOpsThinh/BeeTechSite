@@ -2,7 +2,7 @@
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags blogapp_tags %}
 
 {% with blocks=page.body %}
     {% for block in blocks %}
@@ -16,6 +16,8 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
             {% include 'blog/blocks/image_text.html' with block=block only %}
         {% elif block.block_type == 'image_carousel' %}
             {% include 'blog/blocks/image_carousel.html' with block=block only %}
+        {% elif block.block_type == 'markdown' %}
+            {{ block.value|markdown|safe }}
         {% else %}
             <section class="block-{{ block.block_type }}">
                 {{ block }}

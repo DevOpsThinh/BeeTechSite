@@ -8,6 +8,13 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 {% load wagtailcore_tags wagtailimages_tags blogapp_tags %} 
 
 {% block content %} 
+
+    {% if page.filter_term %}
+        <div class="alert alert-success">
+            Posts for <span>{{ page.filter_type }}: {{ page.filter_term }}</span>
+        </div>
+    {% endif %}
+
     {% for post in posts %}
         <div class="card mb-4">
             {% if post.header_image %} 

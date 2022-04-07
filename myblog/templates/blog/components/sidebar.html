@@ -2,11 +2,29 @@
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
-{% load blogapp_tags %}
+{% load blogapp_tags wagtailroutablepage_tags %}
 
 <div class="col-md-4">
   <!-- <h3>Sidebar</h3> -->
-  {% categories_list %}
 
-  {% tags_list %}
+  {% if blog_page %}
+    <div class="card mb-4">
+      <h5 class="card-header">Search</h5>
+      <div class="card-body">
+        <form role="search" method="get" action="{% routablepageurl blog_page "post_search" %}">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control search-query" name="q" placeholder="Search&hellip;" title="Search for:" />
+            <button class="btn btn-secondary" type="submit">
+              Go
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% categories_list %}
+
+    {% tags_list %}
+
+  {% endif %}
 </div>

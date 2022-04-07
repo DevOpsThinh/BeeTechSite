@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.contrib.routable_page',
+    'wagtail.contrib.postgres_search',
     'wagtail.embeds',
     'wagtail.sites',
     'wagtail.users',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'wagtail.admin',
     'wagtail.core',
     'wagtailmetadata',
+    'wagtailmarkdown',
 
     'modelcluster',
     'taggit',
@@ -175,8 +177,8 @@ WAGTAIL_SITE_NAME = "Bee Mobile Tech"
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
 WAGTAILSEARCH_BACKENDS = {
     'default': {
-        'BACKEND': 'wagtail.search.backends.database',
-    }
+        'BACKEND': 'wagtail.contrib.postgres_search.backend',
+    },
 }
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
