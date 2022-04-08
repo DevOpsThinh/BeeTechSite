@@ -43,12 +43,16 @@ INSTALLED_APPS = [
     'wagtail.core',
     'wagtailmetadata',
     'wagtailmarkdown',
+    'wagtailcaptcha',
 
     'modelcluster',
     'taggit',
 
-    'django_extensions',
+    'captcha',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,6 +92,9 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
 

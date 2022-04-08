@@ -1,0 +1,17 @@
+<!-- Page Templates in Wagtail - Django templates
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+{% extends "base.html" %}
+{% load static wagtailcore_tags crispy_forms_tags%}
+
+{% block content %}
+    <h1>Contact</h1><br>
+
+    <form action="{% pageurl page %}" method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+{% endblock %}

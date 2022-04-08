@@ -25,12 +25,47 @@ from wagtail.admin.edit_handlers import (
 from wagtail.search import index
 from wagtail.core.fields import StreamField
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtailcaptcha.models import WagtailCaptchaEmailForm
+from wagtail.core.fields import StreamField, RichTextField
+from django.utils.functional import cached_property
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import Http404
 from django.utils.functional import cached_property
 
 from .blocks import BodyBlock
 import datetime
+
+class FormField(AbstractFormField):
+    page = ParentalKey("FormPage", on_delete=models.CASCADE, related_name="form_fields")
+
+class FormPage(WagtailCaptchaEmailForm):
+    thank_you_text = RichTextField(blank=True)
+    content_panels = AbstractEmailForm.content_panels + [
+        InlinePanel("form_fields", label="Form fields"),
+        FieldPanel("thank_you_text", classname="full"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("from_address", classname="col6"),
+                        FieldPanel("to_address", classname="col6"),
+                    ]
+                ),
+                FieldPanel("subject"),
+            ],
+            "Email Notification Config",
+        ),
+    ]
+
+    @cached_property
+    def blog_page(self):
+        return self.get_parent().specific
+
+    def get_context(self, request, *args, **kwargs):
+        context=super(FormPage, self).get_context(request, *args, **kwargs)
+        context["blog_page"] = self.blog_page
+        return context
 
 # Page models (inherit from the Wagtail Page class).
 class BlogPage(RoutablePageMixin, Page):
