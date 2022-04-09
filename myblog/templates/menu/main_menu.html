@@ -1,0 +1,15 @@
+<!-- Page Templates in Wagtail - Django templates
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+{% load menu_tags %}
+
+<ul class="navbar-nav">
+    {% for item in menu_items %}
+        <li class="nav-item">
+            <a href="{{ item.href }}" class="nav-link">
+                {{ item.text }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

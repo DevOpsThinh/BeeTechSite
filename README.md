@@ -3,7 +3,7 @@
 ___
 ### Tech Stack
 - Python 3.10.4
-- Django 4.0.3
+- Django 3.2
 - Wagtail 2.16
 - Node.js 16
 - Webpack 5

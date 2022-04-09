@@ -2,6 +2,8 @@
 Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
+{% load menu_tags %}
+
 <header>
   <nav class="mb-2 navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
@@ -17,7 +19,9 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav"></div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          {% main_menu template="menu/main_menu.html" %}
+      </div>
     </div>
   </nav>
 </header>
