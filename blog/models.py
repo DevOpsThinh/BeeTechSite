@@ -28,6 +28,7 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 from wagtail.core.fields import StreamField, RichTextField
+from wagtailmetadata.models import MetadataPageMixin
 from django.utils.functional import cached_property
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import Http404
@@ -64,7 +65,7 @@ class FormPage(WagtailCaptchaEmailForm):
 
     def get_context(self, request, *args, **kwargs):
         context=super(FormPage, self).get_context(request, *args, **kwargs)
-        context["blog_page"] = self.blog_page
+        # context["blog_page"] = self.blog_page
         return context
 
 # Page models (inherit from the Wagtail Page class).
@@ -76,10 +77,33 @@ class BlogPage(RoutablePageMixin, Page):
     #                               Methods
     #--------------------------------------------------------------
 
+    # generate the date_slug_url for the Post page.
+    def get_sitemap_urls(self, request=None):
+        output = []
+        posts = self.get_posts()
+        for post in posts:
+            post_date = post.post_date
+            url = self.get_full_url(request) + self.reverse_subpage(
+                "post_by_date_slug",
+                args=(
+                    post_date.year,
+                    "{0:02}".format(post_date.month),
+                    "{0:02}".format(post_date.day),
+                    post.slug,
+                )
+            )
+
+            output.append({
+                "location": url,
+                "lastmod": post.last_published_at
+            })
+
+        return output
+
     # return a dictionary of variable to bind into the template.
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["blog_page"] = self
+        # context["blog_page"] = self
 
         paginator = Paginator(self.posts, 5)
         page = request.GET.get("page")
@@ -155,7 +179,7 @@ class BlogPage(RoutablePageMixin, Page):
         self.posts = self.get_posts()
         return self.render(request)
 
-class PostPage(Page):
+class PostPage(MetadataPageMixin, Page):
     header_image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -184,9 +208,12 @@ class PostPage(Page):
     #                               Methods
     #--------------------------------------------------------------
 
+    def get_sitemap_urls(self, request=None):
+        return []
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["blog_page"] = self.blog_page
+        # context["blog_page"] = self.blog_page
         return context
 
     @cached_property

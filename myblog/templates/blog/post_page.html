@@ -4,7 +4,11 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
 {% extends "base.html" %} 
 
-{% load wagtailcore_tags wagtailimages_tags blogapp_tags static %} 
+{% load wagtailcore_tags wagtailimages_tags blogapp_tags static wagtailmetadata_tags %} 
+
+{% block meta_tag %}
+    {% meta_tags %}
+{% endblock %}
 
 {% block extra_css %} 
     <link rel="stylesheet" href="{% static "css/code_theme.css" %}"/> 
@@ -17,23 +21,6 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
     <h1>{{ page.title }}</h1>
 
     <p>{% post_categories_list %}</p>
-
-    <!-- <div class="tags">
-            <h3>Tags</h3>
-            {% for tag in page.tags.all %}
-                <button type="button">{{ tag }}</button>
-            {% endfor %}
-        </div>
-
-        <h3>Categories</h3>
-
-        <ul>
-            {% for postpage_category in page.categories.all %}
-                <li>
-                    {{ postpage_category.blog_category.name }}
-                </li>
-            {% endfor %}
-        </ul> -->
 
     {# body #} {% include 'blog/components/streamfield.html' %} {% post_tags_list %}
     <hr />
