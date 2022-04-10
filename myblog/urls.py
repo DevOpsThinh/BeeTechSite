@@ -16,6 +16,7 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
     path('sitemap.xml', sitemap),
     path('robots.txt', blog.views.RobotsView.as_view()),
+    path('comments/', include('django_comments.urls')),
 ]
 
 

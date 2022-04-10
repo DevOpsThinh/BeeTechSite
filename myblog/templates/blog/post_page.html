@@ -4,7 +4,7 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
 {% extends "base.html" %} 
 
-{% load wagtailcore_tags wagtailimages_tags blogapp_tags static wagtailmetadata_tags %} 
+{% load wagtailcore_tags wagtailimages_tags blogapp_tags static wagtailmetadata_tags comments %} 
 
 {% block meta_tag %}
     {% meta_tags %}
@@ -22,8 +22,17 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
     <p>{% post_categories_list %}</p>
 
-    {# body #} {% include 'blog/components/streamfield.html' %} {% post_tags_list %}
-    <hr />
+    {# body #}
+    {% include 'blog/components/streamfield.html' %}
+    {% post_tags_list %}
+    <hr>
+
+    <div class="mb-4">
+        {% render_comment_list for page %}
+    </div>
+    <div class="mb-4">
+        {% render_comment_form for page %}
+    </div>
 
     <p><a href="{{ page.get_parent.url }}">Return to home</a></p>
 {% endblock %}

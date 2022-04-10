@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'wagtailmarkdown',
     'wagtailcaptcha',
     "wagtailmenus",
+    'webpack_loader',
+    'webpack_boilerplate',
 
     'modelcluster',
     'taggit',
@@ -54,6 +56,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
 
+    'django_comments',
+    'django.contrib.sites',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -103,7 +107,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "&nl8s430j^j8l*je+m&ys5dv#zoy)0a2+x1!m8hx290_sx&0gh")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY", "&nl8s430j^j8l*je+m&ys5dv#zoy)0a2+x1!m8hx290_sx&0gh")
 
 DEBUG = int(os.environ.get("DEBUG", default=1))
 
@@ -114,7 +119,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(" ")
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get("SQL_ENGINE","django.db.backends.sqlite3"),
+        'ENGINE': os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("SQL_USER", "user"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
@@ -167,6 +172,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
+    os.path.join(BASE_DIR, 'frontend/build'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
@@ -192,6 +198,12 @@ WAGTAILSEARCH_BACKENDS = {
         'BACKEND': 'wagtail.contrib.postgres_search.backend',
     },
 }
+
+WEBPACK_LOADER = {
+    'MANIFEST_FILE': os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
+
+SITE_ID = 1
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
