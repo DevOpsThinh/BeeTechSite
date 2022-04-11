@@ -1,0 +1,14 @@
+<!-- Page Templates in Wagtail - Django templates
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+{% load comments crispy_forms_tags %}
+
+<form action="{% comment_form_target %}?next={{ form.target_object.url }}" method="post">
+    {% csrf_token %}
+
+    {{ form|crispy }}
+
+    <input type="hidden" name="next" value="{{ form.target_object.url }}" />
+    <input type="submit" name="post" class="btn btn-primary" value="Post" />
+</form>

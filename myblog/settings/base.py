@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'captcha',
     'crispy_forms',
     'crispy_bootstrap5',
+    'comments',
 
     'django_comments',
     'django.contrib.sites',
@@ -104,6 +105,8 @@ TEMPLATES = [
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+COMMENTS_APP = 'comments'
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
 

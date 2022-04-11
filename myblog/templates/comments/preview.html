@@ -3,10 +3,13 @@ Created by Nguyen Truong Thinh
 Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
 {% extends "base.html" %}
-{% load static wagtailcore_tags %}
+
+{% load comments crispy_forms_tags %}
+
+{% block meta_tag %}
+    <title>Create Comment</title>
+{% endblock %}
 
 {% block content %}
-    <h2>{{ page.thank_you_text|richtext }}</h2><br>
-
-    <p><a href="{{ page.get_parent.url }}">Return to home</a></p>
+    {% include 'comments/form.html' %}
 {% endblock %}

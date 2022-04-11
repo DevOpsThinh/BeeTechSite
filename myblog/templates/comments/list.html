@@ -1,0 +1,16 @@
+<!-- Page Templates in Wagtail - Django templates
+Created by Nguyen Truong Thinh
+Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
+
+{% for comment in comment_list %}
+    <div id="c{{ comment.id }}" class="d-flex my-4">
+        <img width="64" height="64" src="http://via.placeholder.com/64" alt="Generic placeholder">
+        <div class="ms-3">
+            <div class="comment-date">
+                <strong class="text-primary">{{ comment.name }}</strong>
+                <small>{{ comment.submit_date }}</small>
+                {{ comment.comment|linebreaks }}
+            </div>
+        </div>
+    </div>
+{% endfor %}
