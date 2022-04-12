@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'captcha',
     'crispy_forms',
     'crispy_bootstrap5',
-    'comments',
+    'comments.apps.CustomCommentsConfig',
 
     'django_comments',
     'django.contrib.sites',

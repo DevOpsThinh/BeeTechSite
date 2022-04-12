@@ -4,11 +4,17 @@ Contact me: nguyentruongthinhvn2020@gmail.com || +84393280504 -->
 
 {% load comments crispy_forms_tags %}
 
-<form action="{% comment_form_target %}?next={{ form.target_object.url }}" method="post">
-    {% csrf_token %}
+<form
+  action="{% comment_form_target %}?next={{ form.target_object.url }}"
+  method="post"
+  data-object-pk="{{ form.get_object_pk }}"
+  data-content-type="{{ form.get_content_type }}"
+  data-mention-url="{% url "comments-mention-query" %}"
+  class="comments-form">
 
-    {{ form|crispy }}
+  {% csrf_token %} 
+  {{ form|crispy }}
 
-    <input type="hidden" name="next" value="{{ form.target_object.url }}" />
-    <input type="submit" name="post" class="btn btn-primary" value="Post" />
+  <input type="hidden" name="next" value="{{ form.target_object.url }}" />
+  <input type="submit" name="post" class="btn btn-primary" value="Post" />
 </form>

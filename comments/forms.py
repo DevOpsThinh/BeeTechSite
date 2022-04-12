@@ -36,3 +36,9 @@ class CommentForm(CommentDetailsForm):
             is_public=True,
             is_removed=False,
         )
+
+    def get_content_type(self):
+        return str(self.target_object._meta)
+
+    def get_object_pk(self):
+        return str(self.target_object._get_pk_val())

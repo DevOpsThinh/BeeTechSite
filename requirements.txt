@@ -13,3 +13,4 @@ wagtail-django-recaptcha==1.0
 Pygments
 gunicorn==20.1.0
 python-webpack-boilerplate==0.0.10
+emoji==1.7.0
