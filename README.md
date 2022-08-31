@@ -21,5 +21,7 @@ ___
 <img src="img/admin.png" height="320" />
 
 ### References
-- Django's doc: https://docs.djangoproject.com/en/4.0/topics/db/models/#module-django.db.models
-- Wagtail's doc: https://docs.wagtail.org/en/stable/
+- [Django's doc](https://docs.djangoproject.com/en/4.0)
+- [Wagtail's doc](https://docs.wagtail.org/en/stable/)
+- [Michael Yin - AccordBox](https://leanpub.com/u/michaelyin)
+- [Vincent - LearnDjango](https://learndjango.com/)
